@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace와 id를 이용해서 DAO의 메소드와 연결, 쿼리문이 db랑 연동하도록 함 -->
+<mapper namespace="com.myspring.mysns.mappers.userMapper">
+
+	<!-- resultMap은 db에 있는 데이터들을 묶어줌
+	property는 vo의 변수, column은 mysql의 key -->
+	<resultMap id="userResult" type="userVO">
+		<result property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="created_at" column="created_at" />
+	</resultMap>
+
+	<!-- 쿼리문의 id들 -->
+	<!-- parameterType 주의 -->
+	<select id="selectById" resultMap="userResult"
+		parameterType="Long">
+		<![CDATA[
+			SELECT * FROM user WHERE id=#{id}
+		]]>
+	</select>
+
+	<select id="selectAllUserList" resultMap="userResult">
+		<![CDATA[
+			SELECT * FROM user
+		]]>
+	</select>
+	
+	<select id="insertUser" resultType="int" parameterType="userVO">
+		<![CDATA[
+			INSERT INTO user(id, username, password) VALUES(#{id},#{username},#{password})
+		]]>
+	</select>
+
+	<select id="loginByUsername" resultType="userVO"
+		parameterType="userVO">
+		<![CDATA[
+			SELECT * FROM user WHERE username=#{username} AND password=#{password}
+		]]>
+	</select>
+
+</mapper>
