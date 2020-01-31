@@ -32,7 +32,7 @@
 	
 	<select id="insertUser" resultType="int" parameterType="userVO">
 		<![CDATA[
-			INSERT INTO user(id, username, password) VALUES(#{id},#{username},#{password})
+			INSERT INTO user(username, password) VALUES(#{username},#{password})
 		]]>
 	</select>
 
@@ -42,5 +42,12 @@
 			SELECT * FROM user WHERE username=#{username} AND password=#{password}
 		]]>
 	</select>
-
+	
+	<select id="signupById" resultMap="userResult"
+		parameterType="Long">
+		<![CDATA[
+			SELECT * FROM user WHERE id=#{id}
+		]]>
+	</select>
+	
 </mapper>

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.myspring.mysns.repository.UserVO;
+import com.myspring.mysns.domain.UserVO;
 import com.myspring.mysns.service.UserService;
 
 @Controller
@@ -24,7 +27,7 @@ public class HomeController {
 	@Autowired
 	public UserService service;
 
-    @RequestMapping(value = "/mysns", method = RequestMethod.GET)
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String home(Locale locale, Model model) throws Exception{
  
         logger.info("home");
@@ -47,22 +50,21 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "login";
+		return "signup";
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	private ModelAndView login(HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("login");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	private ModelAndView index(HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("index");
+		return mav;
 	}
 	
 }
-
-/*
-@RestController
-@RequestMapping("/*")
-public class HomeController {
-	
-	static Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		return "
-	}
-	
-}
-*/

@@ -1,31 +1,30 @@
 $(document).ready(function(){
 	$('#signup_btn').click(function(){
-		alert("button clicked.");
-		console.log("signup clicked!!!");
-		
 		var username = $('#signup_username').val();
 		var password = $('#signup_password').val();
 		
 		if(!username || !password) {
-			alert("필수 항목을 채워주세요.");
+			alert("This field is mandatory.");
 			return;
 		}
 		
-		var param = {
+		var user = {
 				username: username,
 				password: password
 		}
 		
 		$.ajax({
-	        url: "/signup",
+	        url: "/user",
 	        method: "POST",
 	        dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(param)
+            data: JSON.stringify(user)
 	    }).then(function(data) {
 	    	alert("Sign Up Success.")
 	    }, function(err) {
-	    	alert("계정 정보를 확인해주세요.");
+	    	alert("Sign Up Failed.");
+	    	// 현재 success가 되지 않기 때문에 임시로 fail 이후 login.ftl 화면으로 넘어가도록 설정
+	    	window.location.href = '/login';
 	    });
 		return false;
 		

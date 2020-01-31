@@ -1,11 +1,17 @@
-package com.myspring.mysns.repository;
+package com.myspring.mysns.domain;
 
 import java.sql.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import com.myspring.mysns.controller.UserController;
 
 @Component("userVO")
 public class UserVO {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	private Long id;
 	private String username;
@@ -59,6 +65,7 @@ public class UserVO {
 	
 	@Override
 	public String toString() {
+		logger.info("call toString() method in UserVO");
 		String info = "UserVO = [id: " + id+ ", username: " + username + ", password: " + password + ", created_at: " + created_at + "]";
 		return info;
 	}

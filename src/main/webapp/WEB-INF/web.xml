@@ -30,5 +30,8 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
+	
+	<!-- 뷰 관련 설정 -->
+	<mvc:default-servlet-handler />
+	
 </web-app>
