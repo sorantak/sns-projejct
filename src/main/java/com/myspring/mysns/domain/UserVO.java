@@ -13,21 +13,23 @@ public class UserVO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
+	// mysql에서는 _at이 허용되지만 java에서는 안됨
 	private Long id;
 	private String username;
 	private String password;
-	private Date created_at;
+	private Date createdAt;
 	
 	// 변수 없는 생성자 필수
 	public UserVO() {
 		super();
 	}
-
-	public UserVO(Long id, String username, String password, Date created_at) {
+	
+	// 이 생성자는 필요없는 것?
+	public UserVO(Long id, String username, String password, Date createdAt) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.created_at = created_at;
+		this.createdAt = createdAt;
 	}
 	
 	// getter, setter로 변수들을 가져옴
@@ -55,19 +57,18 @@ public class UserVO {
 		this.password = password;
 	}
 	
-	public Date getCreated_at() {
-		return created_at;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 	
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
-	
+
 	@Override
 	public String toString() {
 		logger.info("call toString() method in UserVO");
-		String info = "UserVO = [id: " + id+ ", username: " + username + ", password: " + password + ", created_at: " + created_at + "]";
-		return info;
+		return "UserVO [id=" + id + ", username=" + username + ", password=" + password + ", createdAt=" + createdAt + "]";
 	}
 
 }

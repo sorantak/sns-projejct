@@ -15,48 +15,59 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myspring.mysns.domain.ResponseData;
+import com.myspring.mysns.domain.TokenVO;
 import com.myspring.mysns.domain.UserVO;
 import com.myspring.mysns.service.UserService;
 
 @RestController
-@RequestMapping("/*")
+//@RequestMapping("/*")
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
+	
+	// 위랑 다르게 private 안 써준 이유?
+	@Autowired
+	UserVO userVO;
+	
+	@Autowired
+	TokenVO tokenVO;
+	
+	@Autowired
+	ResponseData responseData;
 
 	// 회원정보 조회 API
-	// id로 조회
-	// @PathVariable annotation을 사용하면 url주소에 {id}값만 넣어주면 됨.
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public HashMap<String, Object> selectById(@PathVariable("id") Long id) throws DataAccessException {
-		logger.info("call selectById() method in UserController");
-		UserVO userVO = userService.selectById(id);
-		System.out.println(userVO);
-		// HashMap은 리턴값을 json 형식으로 반환하도록 만들어준다. put을 사용하여 key와 value를 추가해줌.
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("code", HttpStatus.OK.value());
-		map.put("message", "SUCCESS");
-		map.put("data", userVO);
-		return map;
-	}
-
 	// 전체 조회
-	@RequestMapping(value = "/users", method = RequestMethod.GET)
-	public HashMap<String, Object> selectAllUserList() throws DataAccessException {
-		logger.info("call selectAllUserList() method in UserController");
-		List<UserVO> userVO = userService.selectAllUserList();
-		System.out.println(userVO);
-		// HashMap은 리턴값을 json 형식으로 반환하도록 만들어준다. put을 사용하여 key와 value를 추가해줌.
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("code", HttpStatus.OK.value());
-		map.put("message", "SUCCESS");
-		map.put("data", userVO);
-		return map;
+	// method의 dataType이 ResponseData
+	@RequestMapping(value = "/allUsers", method = RequestMethod.GET)
+	public ResponseData viewAllUsersList() {
+		logger.info("call viewAllUsersList() method in UserController");
+		
+		// userList 객체에 쿼리문 담아줌
+		List<UserVO> userList = userService.viewAllUsersList();
+		
+		// user 객체에 또 userList 객체 담아줌 (왜?)
+		for(UserVO user : userList) {
+			System.out.println("first: " + user);
+		}
+		
+		// responseData의 setter 실행
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(userList);
+		
+		// responseData 출력
+		System.out.println("Response Data: " + responseData);
+		
+		return responseData;
+		
 	}
+	
 
+/*
 	// 회원가입 API
 	// 회원가입
 		// 1) ajax의 user(username, password)를 받아옴
@@ -74,12 +85,12 @@ public class UserController {
 			System.out.println(vo);
 			userService.addUser(vo);
 			
-//			UserVO selectUsernameVO = userService.selectByUsername(vo.getUsername());
+			UserVO selectIdVO = userService.signupById(vo.getId());
 			
 			HashMap vo_map = new HashMap();
-//			vo_map.put("id", selectUsernameVO.getId()); 
-//			vo_map.put("username", selectUsernameVO.getUsername());
-//			vo_map.put("created_at", selectUsernameVO.getCreated_at());
+			vo_map.put("id", selectIdVO.getId());
+			vo_map.put("username", selectIdVO.getUsername());
+			vo_map.put("created_at", selectIdVO.getCreated_at());
 			
 			HashMap r_map = new HashMap();
 			r_map.put("code", HttpStatus.OK.value());
@@ -107,6 +118,6 @@ public class UserController {
 		} catch(Exception e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
-	}
+	} */
 
 }
