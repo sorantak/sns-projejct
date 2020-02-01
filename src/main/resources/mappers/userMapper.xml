@@ -28,7 +28,7 @@
 		]]>
 	</select>
 	
-	<select id="viewById" resultMap="userResult" parameterType="Long">
+	<select id="viewUserById" resultMap="userResult" parameterType="Long">
 		<![CDATA[
 			SELECT * FROM user 
 			WHERE id=#{id}
@@ -37,26 +37,26 @@
 	
 	<!-- resultMap이 왜 없는 것? -->
 	<!-- keyProperty, useGeneratedKeys 무엇? -->
-	<select id="signUp" parameterType="userVO" keyProperty="id" useGeneratedKeys="true">
+	<insert id="signUp" parameterType="userVO" keyProperty="id" useGeneratedKeys="true">
 		<![CDATA[
 			INSERT INTO user(username, password) 
 			VALUES(#{username},#{password})
 		]]>
-	</select>
+	</insert>
 
-	<select id="loginByUser" resultMap="userResult" parameterType="userVO">
+	<select id="logInByUser" resultMap="userResult" parameterType="userVO">
 		<![CDATA[
 			SELECT * FROM user 
 			WHERE username=#{username} AND password=#{password}
 		]]>
 	</select>
 	
-	<select id="createToken" parameterType="tokenVO" keyProperty="token" useGenerationKeys="true">
+	<insert id="createToken" parameterType="tokenVO" keyProperty="token" useGeneratedKeys="true">
 		<![CDATA[
 			INSERT INTO token(token, user_id)
-			VALUES(#{token}, #{user_id})
+			VALUES(#{token}, #{userId})
 		]]>
-	</select>
+	</insert>
 	
 	<!-- 무슨 역할 하는 메소드? -->
 	<select id="viewUserByToken" resultMap="tokenResult" parameterType="String">

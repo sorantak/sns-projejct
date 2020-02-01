@@ -27,15 +27,21 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO viewById(Long id) throws DataAccessException {
-		logger.info("call viewById() method in UserService");
-		return dao.viewById(id);
+	public UserVO viewUserById(Long id) throws DataAccessException {
+		logger.info("call viewUserById() method in UserService");
+		return dao.viewUserById(id);
 	}
 
 	@Override
 	public int signUp(UserVO userVO) throws DataAccessException {
 		logger.info("call signUp() method in UserService");
 		return dao.signUp(userVO);
+	}
+	
+	@Override
+	public UserVO logIn(UserVO userVO) throws DataAccessException {
+		logger.info("call logIn() method in UserService");
+		return dao.logInByUser(userVO);
 	}
 
 	@Override

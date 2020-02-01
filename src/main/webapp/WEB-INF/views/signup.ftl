@@ -95,7 +95,7 @@ body {
 </head>
 
 <body>
-	<#include "header.ftl">
+	<#include "/frontend_step1/header.ftl">
 
 	<div class="container login-container">
 		<div class="row">
@@ -119,7 +119,7 @@ body {
 		</div>
 	</div>
 
-	<#include "footer.ftl">
+	<#include "/frontend_step1/footer.ftl">
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

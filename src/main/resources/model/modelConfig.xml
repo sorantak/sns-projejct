@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<!-- VO alias 설정 -->
+		<typeAlias type="com.myspring.mysns.domain.UserVO"  alias="userVO" />
+		<typeAlias type="com.myspring.mysns.domain.TokenVO"  alias="tokenVO" />
+	</typeAliases>
+</configuration>

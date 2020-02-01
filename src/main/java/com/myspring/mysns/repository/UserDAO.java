@@ -13,13 +13,13 @@ public interface UserDAO {
 	public List<UserVO> viewAllUsersList() throws DataAccessException;
 	
 	// id로 조회
-	public UserVO viewById(Long id) throws DataAccessException;
+	public UserVO viewUserById(Long id) throws DataAccessException;
 	
 	// 회원가입
 	public int signUp(UserVO userVO) throws DataAccessException ;
 	
 	// 로그인
-	public UserVO loginByUser(UserVO userVO) throws DataAccessException;
+	public UserVO logInByUser(UserVO userVO) throws DataAccessException;
 
 	// 토큰 생성
 	public int createToken(TokenVO tokenVO) throws DataAccessException;

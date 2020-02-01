@@ -1,25 +1,24 @@
 package com.myspring.mysns.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myspring.mysns.domain.ResponseData;
 import com.myspring.mysns.domain.TokenVO;
 import com.myspring.mysns.domain.UserVO;
 import com.myspring.mysns.service.UserService;
+import com.myspring.mysns.util.RandomToken;
 
+// REST API의 모든 datatype은 ResponseData 객체로 반환하도록 해야 함
 @RestController
 //@RequestMapping("/*")
 public class UserController {
@@ -38,12 +37,15 @@ public class UserController {
 	
 	@Autowired
 	ResponseData responseData;
+	
+	@Autowired
+	RandomToken randomToken;
 
-	// 회원정보 조회 API
+	// 1) 회원정보 조회 API
 	// 전체 조회
 	// method의 dataType이 ResponseData
 	@RequestMapping(value = "/allUsers", method = RequestMethod.GET)
-	public ResponseData viewAllUsersList() {
+	public ResponseData viewAllUsersList() throws Exception {
 		logger.info("call viewAllUsersList() method in UserController");
 		
 		// userList 객체에 쿼리문 담아줌
@@ -60,64 +62,95 @@ public class UserController {
 		responseData.setData(userList);
 		
 		// responseData 출력
-		System.out.println("Response Data: " + responseData);
+		System.out.println("전체 회원 조회 API: " + responseData);
 		
 		return responseData;
 		
 	}
 	
-
-/*
-	// 회원가입 API
-	// 회원가입
-		// 1) ajax의 user(username, password)를 받아옴
-		// 2) 그 값을 userService의 addUser() method를 실행하여, DAO의 insertUser() method를 실행하게
-		// 하고, DAO는 mapper의 insertUser sql문을 실행하게 해서 DB에 연동되어야 함.
-		// 3) DB에 저장된 그 값만 json 형식으로 출력되어야 함.
-	@RequestMapping(value = "/user", method = RequestMethod.POST)
-//	public ResponseEntity<String> addUser (@RequestBody UserVO vo) {
-	public HashMap addUser (@RequestBody UserVO vo) {
-		// ResponseEntity는 http 상태코드를 전송하는 데이터타입. 브라우저에서 받은 parameter(@Requestbody)를 vo 형식으로 addUser() method의 인자로 설정  		
-		// 예외처리를 설정하여 시도할 때 vo 형식의 parameter로 쿼리문을 실행하도록 함. 성공 또는 실패 시 http 상태코드 반환
-		try {
-			logger.info("call addUser() method in UserController");
-			logger.info(vo.toString());
-			System.out.println(vo);
-			userService.addUser(vo);
-			
-			UserVO selectIdVO = userService.signupById(vo.getId());
-			
-			HashMap vo_map = new HashMap();
-			vo_map.put("id", selectIdVO.getId());
-			vo_map.put("username", selectIdVO.getUsername());
-			vo_map.put("created_at", selectIdVO.getCreated_at());
-			
-			HashMap r_map = new HashMap();
-			r_map.put("code", HttpStatus.OK.value());
-			r_map.put("message", "SUCCESS");
-			r_map.put("data", vo_map);
-			
-			return r_map;
-		} catch(Exception e) {
-			e.printStackTrace();
-			return new HashMap();
-		}
+	// id로 조회
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	// @RequestParam("id")는 아마 쿼리문에서 가져온 것? Long id는 vo에서
+	public ResponseData viewUserById(@RequestParam("id") Long id) throws Exception {
+		logger.info("call viewUserById() method in UserController");
+		
+		// userVO 객체에 쿼리문 담아줌
+		userVO = userService.viewUserById(id);
+		System.out.println("userVO: " + userVO);
+		
+		// responseData의 setter 실행
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(userVO);
+		
+		// responseData 출력
+		System.out.println("id별 회원 조회 API: " + responseData);
+		
+		return responseData;
+		
 	}
 	
-	// 회원인증 API
-	// 로그인(회원인증)
+	// 2) 회원 가입 API
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	// @RequestBody는 어디서 가져온 것인가...?
+	public ResponseData signUp(@RequestBody UserVO userVO) throws Exception {
+		logger.info("call signUp() method in UserController");
+		
+		// 1) 객체 없이 그냥 쿼리문 실행
+		userService.signUp(userVO);
+		// 2) id 객체에 id를 저장
+		Long id = userVO.getId();
+		System.out.println("id: " + id);
+		// 3) 그 id 포함한 data 가져온 것을 userVO 객체에 넣어줌
+		userVO = userService.viewUserById(id);
+		// 4) responseData에 넣어줌
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(userVO);
+		
+		System.out.println("회원 가입 API: " + responseData);
+		
+		return responseData;
+	}
+	
+	// 3) 회원 인증 API
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
-	public ResponseEntity<String> login (@RequestBody UserVO vo) {
-		// ResponseEntity는 http 상태코드를 전송하는 데이터타입. 브라우저에서 받은 parameter(@Requestbody)를 vo 형식으로 addUser() method의 인자로 설정  		
-		// 예외처리를 설정하여 시도할 때 vo 형식의 parameter로 쿼리문을 실행하도록 함. 성공 또는 실패 시 http 상태코드 반환
-		try {
-			logger.info("call login() method in UserController");
-			logger.info(vo.toString());
-			userService.login(vo);
-			return new ResponseEntity<String>("Add on DB Success",HttpStatus.OK);
-		} catch(Exception e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}
-	} */
+	// @RequestBody는 로그인창에서 입력한 username, password가 vo형식으로 메소드의 인자가 되게 함
+	public ResponseData AuthorizeUser(@RequestBody UserVO userVO) throws Exception {
+		logger.info("call AuthorizeUser() method in UserController");
+		
+		// 1) 로그인 쿼리문
+		userVO = userService.logIn(userVO);
+		System.out.println("user: " + userVO);
+		
+		// 2) 로그인한 회원id 조회. vo에 담긴 회원정보 중에 id만 가져옴
+		Long id = userVO.getId();
+		System.out.println("user id: " + id);
+		
+		// 3) token 생성
+		StringBuffer token = randomToken.createToken();
+		System.out.println("token: " + token);
+		
+		// 4) token toString
+		String tokenToString = token.toString();
+		
+		// 5) token 생성 쿼리문. id랑 token을 넣었으니 createdAt도 생길 것. tokenVO = 2) + 4)
+		tokenVO.setUserId(id);
+		tokenVO.setToken(tokenToString);
+		System.out.println("tokenVO: " + tokenVO);
+		userService.createToken(tokenVO);
+		
+		// 6) token으로 조회 쿼리문
+		tokenVO = userService.viewUserByToken(tokenVO);
+		System.out.println("tokenVO2: " + tokenVO);
+		
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(tokenVO);
+		
+		System.out.println("회원 인증 API: " + responseData);
+		
+		return responseData;
+	}
 
 }

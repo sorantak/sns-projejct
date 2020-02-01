@@ -11,9 +11,11 @@ public interface UserService {
 
 	public List<UserVO> viewAllUsersList() throws DataAccessException;
 	
-	public UserVO viewById(Long id) throws DataAccessException;
+	public UserVO viewUserById(Long id) throws DataAccessException;
 	
 	public int signUp(UserVO userVO) throws DataAccessException;
+	
+	public UserVO logIn(UserVO userVO) throws DataAccessException;
 	
 	public int createToken(TokenVO tokenVO) throws DataAccessException;
 	

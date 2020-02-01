@@ -9,22 +9,22 @@ public class MainController {
 
 	@RequestMapping("/")
 	 public ModelAndView index() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("index");
-		return mv;
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("index");
+		return mav;
 	}
 	
 	@RequestMapping("/signup")
 	public ModelAndView signup() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("signup");
-		return mv;
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("signup");
+		return mav;
 	}
 	
 	@RequestMapping("/login")
 	public ModelAndView login() {
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("login");
-		return mv;
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("login");
+		return mav;
 	}
 }

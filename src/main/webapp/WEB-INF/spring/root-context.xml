@@ -38,8 +38,8 @@
 	<!-- sqlSessionFactory는 연결된 db의 쿼리문을 사용할 수 있도록 함. 이것을 bean으로 생성 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
-        <property name="mapperLocations" value="classpath:mappers/userMapper.xml"></property>
+        <property name="configLocation" value="classpath:model/modelConfig.xml"></property>
+        <property name="mapperLocations" value="classpath:/mappers/userMapper.xml"></property>
     </bean>
 
 	<!-- sqlSessionFactory는 연결된 db의 쿼리문을 사용할 수 있도록 함. 이것을 bean으로 생성 
@@ -53,16 +53,8 @@
 	</bean> -->
 
 	<bean id="sqlSession"
-		class="org.mybatis.spring.SqlSessionTemplate"
-		destroy-method="clearCache">
+		class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg name="sqlSessionFactory" index="0" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
-	
-	<!-- bean 등록. mysns까지만 설정해주면 그 하위 패키지 안에 있는 모든 객체를 찾아서 bean으로 만들어줌 -->
-	<context:component-scan base-package="com.myspring.mysns"></context:component-scan>
-	
-	<!-- 
-	<bean id="userDAO" class="com.myspring.myapp.repository.UserDAOImpl"> 
-		<property name="sqlSession" ref="sqlSession"></property> </bean> -->
 
 </beans>
