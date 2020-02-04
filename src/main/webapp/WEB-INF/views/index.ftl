@@ -9,7 +9,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SNS</title>
+<title>Blog Home - Start Bootstrap Template</title>
 
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -32,13 +32,40 @@ body {
 	<#include "/frontend_step1/header.ftl">
 
 	<div class="container">
-
-		<h1>
-			Welcome <span id="username"></span>
-		</h1>
-
+	
+		<#if user??>
+			<div class="my-5"></div>
+			<ul class="nav nav-tabs">
+				 <li class="nav-item">
+				 	<a class="nav-link active" data-toggle="tab" href="#myfeed">My Posts</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#posts">All Posts</a>
+				</li>
+			</ul>
+			
+				<div class="col-md-2"></div>
+				
+				<div class="tab-content">
+					<div class="col-md-2"></div>
+					<div class="container tab-pane active col-md-8" id="myfeed">
+						<h1 class="my-4"></h1>
+					</div>
+					<div class="container tab-pane fade col-md-8" id="posts">
+						<h1 class="my-4"></h1>
+					</div>
+				</div>
+		<#else>
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8" id="posts">
+					<h1 class="my-4"></h1>
+				</div>
+			</div>
+		</#if>
+		
 	</div>
-
+	
 	<#include "/frontend_step1/footer.ftl">
 
 	<div class="modal fade" id="create_post_modal" tabindex="-1"
@@ -56,8 +83,8 @@ body {
 				<div class="modal-body">
 					<form>
 						<div class="form-group">
-							<label for="create_title_text">Title</label> <input type="text"
-								class="form-control" id="create_title_text" placeholder="Title">
+							<label for="create_title_text">Title</label>
+							<input type="text" class="form-control" id="create_title_text" placeholder="Title">
 						</div>
 						<div class="form-group">
 							<label for="create_content_text">Content</label>
@@ -68,8 +95,7 @@ body {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="save_post_btn">Save
-						Post</button>
+					<button type="button" class="btn btn-primary" id="save_post_btn">Save Post</button>
 				</div>
 			</div>
 		</div>
@@ -87,7 +113,6 @@ body {
 		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 		crossorigin="anonymous"></script>
 	<script src="/js/index.js"></script>
-	<!-- src가 mapping 주소임. servlet-context.xml에 resource 부분에 설정해주었음 -->
 </body>
 
 </html>

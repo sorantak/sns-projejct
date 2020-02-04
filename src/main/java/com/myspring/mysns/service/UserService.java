@@ -9,16 +9,16 @@ import com.myspring.mysns.domain.UserVO;
 
 public interface UserService {
 
-	public List<UserVO> viewAllUsersList() throws DataAccessException;
+	public List<UserVO> findAllUsersList() throws DataAccessException;
 	
-	public UserVO viewUserById(Long id) throws DataAccessException;
+	public UserVO findUserById(Long id) throws DataAccessException;
 	
-	public int signUp(UserVO userVO) throws DataAccessException;
+	public int saveUser(UserVO userVO) throws DataAccessException;
 	
 	public UserVO logIn(UserVO userVO) throws DataAccessException;
 	
 	public int createToken(TokenVO tokenVO) throws DataAccessException;
 	
-	public TokenVO viewUserByToken(TokenVO tokenVO) throws DataAccessException;
+	public TokenVO viewUserByToken(String token) throws DataAccessException;
 	
 }

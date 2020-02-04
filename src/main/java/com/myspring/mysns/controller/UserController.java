@@ -20,7 +20,6 @@ import com.myspring.mysns.util.RandomToken;
 
 // REST API의 모든 datatype은 ResponseData 객체로 반환하도록 해야 함
 @RestController
-//@RequestMapping("/*")
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -45,13 +44,13 @@ public class UserController {
 	// 전체 조회
 	// method의 dataType이 ResponseData
 	@RequestMapping(value = "/allUsers", method = RequestMethod.GET)
-	public ResponseData viewAllUsersList() throws Exception {
-		logger.info("call viewAllUsersList() method in UserController");
+	public ResponseData findAllUsersList() throws Exception {
+		logger.info("call findAllUsersList() method in UserController");
 		
 		// userList 객체에 쿼리문 담아줌
-		List<UserVO> userList = userService.viewAllUsersList();
+		List<UserVO> userList = userService.findAllUsersList();
 		
-		// user 객체에 또 userList 객체 담아줌 (왜?)
+		// user 객체에 또 userList 객체 담아줌. 그냥 콘솔창에서 확인하려고
 		for(UserVO user : userList) {
 			System.out.println("first: " + user);
 		}
@@ -71,11 +70,11 @@ public class UserController {
 	// id로 조회
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	// @RequestParam("id")는 아마 쿼리문에서 가져온 것? Long id는 vo에서
-	public ResponseData viewUserById(@RequestParam("id") Long id) throws Exception {
-		logger.info("call viewUserById() method in UserController");
+	public ResponseData findUserById(@RequestParam("id") Long id) throws Exception {
+		logger.info("call findUserById() method in UserController");
 		
 		// userVO 객체에 쿼리문 담아줌
-		userVO = userService.viewUserById(id);
+		userVO = userService.findUserById(id);
 		System.out.println("userVO: " + userVO);
 		
 		// responseData의 setter 실행
@@ -92,17 +91,17 @@ public class UserController {
 	
 	// 2) 회원 가입 API
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
-	// @RequestBody는 어디서 가져온 것인가...?
-	public ResponseData signUp(@RequestBody UserVO userVO) throws Exception {
-		logger.info("call signUp() method in UserController");
+	// @RequestBody 내용을 UserVO 형식으로 인자 설정
+	public ResponseData saveUser(@RequestBody UserVO userVO) throws Exception {
+		logger.info("call saveUser() method in UserController");
 		
 		// 1) 객체 없이 그냥 쿼리문 실행
-		userService.signUp(userVO);
+		userService.saveUser(userVO);
 		// 2) id 객체에 id를 저장
 		Long id = userVO.getId();
 		System.out.println("id: " + id);
 		// 3) 그 id 포함한 data 가져온 것을 userVO 객체에 넣어줌
-		userVO = userService.viewUserById(id);
+		userVO = userService.findUserById(id);
 		// 4) responseData에 넣어줌
 		responseData.setCode(HttpStatus.OK);
 		responseData.setMessage("SUCCESS");
@@ -116,8 +115,8 @@ public class UserController {
 	// 3) 회원 인증 API
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	// @RequestBody는 로그인창에서 입력한 username, password가 vo형식으로 메소드의 인자가 되게 함
-	public ResponseData AuthorizeUser(@RequestBody UserVO userVO) throws Exception {
-		logger.info("call AuthorizeUser() method in UserController");
+	public ResponseData FindUserByToken(@RequestBody UserVO userVO) throws Exception {
+		logger.info("call FindUserByToken() method in UserController");
 		
 		// 1) 로그인 쿼리문
 		userVO = userService.logIn(userVO);
@@ -141,7 +140,7 @@ public class UserController {
 		userService.createToken(tokenVO);
 		
 		// 6) token으로 조회 쿼리문
-		tokenVO = userService.viewUserByToken(tokenVO);
+		tokenVO = userService.viewUserByToken(tokenToString);
 		System.out.println("tokenVO2: " + tokenVO);
 		
 		responseData.setCode(HttpStatus.OK);

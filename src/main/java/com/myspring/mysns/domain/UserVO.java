@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.myspring.mysns.controller.UserController;
 
 @Component("userVO")
@@ -16,20 +18,14 @@ public class UserVO {
 	// mysql에서는 _at이 허용되지만 java에서는 안됨
 	private Long id;
 	private String username;
+	//
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private Date createdAt;
 	
 	// 변수 없는 생성자 필수
 	public UserVO() {
 		super();
-	}
-	
-	// 이 생성자는 필요없는 것?
-	public UserVO(Long id, String username, String password, Date createdAt) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.createdAt = createdAt;
 	}
 	
 	// getter, setter로 변수들을 가져옴

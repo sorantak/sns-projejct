@@ -27,4 +27,11 @@ public class MainController {
 		mav.setViewName("login");
 		return mav;
 	}
+	
+	@RequestMapping("/detail")
+	public ModelAndView detail() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("detail");
+		return mav;
+	}
 }

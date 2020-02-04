@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <head>
 
 <meta charset="utf-8">
@@ -90,7 +89,7 @@ body {
 	<div class="container login-container">
             <div class="row">
                 <div class="col-md-6 login-form-1">
-                    <h3>Log In</h3>
+                    <h3>Login</h3>
                     <form>
                         <div class="form-group">
                             <input type="text" id="login_username" class="form-control" placeholder="Username *" value="" />
@@ -99,7 +98,7 @@ body {
                             <input type="password" id="login_password" class="form-control" placeholder="Password *" value="" />
                         </div>
                         <div class="form-group">
-                            <input type="submit" id="login_btn" class="btnSubmit" value="Log In"/>
+                            <input type="submit" id="login_btn" class="btnSubmit" value="Login"/>
                         </div>
                     </form>
                 </div>
@@ -120,7 +119,6 @@ body {
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 		crossorigin="anonymous"></script>
-	<!-- 가장 base path인 /mysns를 추가해주어야 함 -->
 	<script src="/js/login.js"></script>
 </body>
 

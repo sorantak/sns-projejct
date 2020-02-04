@@ -21,21 +21,21 @@ public class UserServiceImpl implements UserService {
 	private UserDAO dao;
 	
 	@Override
-	public List<UserVO> viewAllUsersList() throws DataAccessException {
-		logger.info("call viewAllUsersList() method in UserService");
-		return dao.viewAllUsersList();
+	public List<UserVO> findAllUsersList() throws DataAccessException {
+		logger.info("call findAllUsersList() method in UserService");
+		return dao.findAllUsersList();
 	}
 
 	@Override
-	public UserVO viewUserById(Long id) throws DataAccessException {
-		logger.info("call viewUserById() method in UserService");
-		return dao.viewUserById(id);
+	public UserVO findUserById(Long id) throws DataAccessException {
+		logger.info("call findUserById() method in UserService");
+		return dao.findUserById(id);
 	}
 
 	@Override
-	public int signUp(UserVO userVO) throws DataAccessException {
-		logger.info("call signUp() method in UserService");
-		return dao.signUp(userVO);
+	public int saveUser(UserVO userVO) throws DataAccessException {
+		logger.info("call saveUser() method in UserService");
+		return dao.saveUser(userVO);
 	}
 	
 	@Override
@@ -51,9 +51,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public TokenVO viewUserByToken(TokenVO tokenVO) throws DataAccessException {
+	public TokenVO viewUserByToken(String token) throws DataAccessException {
 		logger.info("call viewUserByToken() method in UserService");
-		return dao.viewUserByToken(tokenVO);
+		return dao.viewUserByToken(token);
 	}
 
 }
