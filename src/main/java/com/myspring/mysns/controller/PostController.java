@@ -12,12 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myspring.mysns.domain.PostVO;
 import com.myspring.mysns.domain.PostAndUserVO;
 import com.myspring.mysns.domain.ResponseData;
 import com.myspring.mysns.domain.TokenVO;
+import com.myspring.mysns.domain.UserVO;
 import com.myspring.mysns.service.PostService;
 import com.myspring.mysns.service.UserService;
 
@@ -37,6 +39,10 @@ public class PostController {
 	private UserService userService;
 	@Autowired
 	TokenVO tokenVO;
+	@Autowired
+	PostAndUserVO postAndUserVO;
+	@Autowired
+	UserVO userVO;
 	
 	// 글 저장 API
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
@@ -77,7 +83,7 @@ public class PostController {
 		
 		List<PostAndUserVO> postList = postService.findAllPost();
 		for(PostAndUserVO pau : postList) {
-			logger.info("postList: " + postList);
+			logger.info("postList: " + pau);
 		}
 		
 		responseData.setCode(HttpStatus.OK);
@@ -91,9 +97,23 @@ public class PostController {
 	
 	// 내가 쓴 글 리스트 조회 API
 	@RequestMapping(value = "/post/my", method = RequestMethod.GET)
-	public ResponseData findMyPost() throws Exception {
+	public ResponseData findMyPost(@RequestParam("id") Long id) throws Exception {
 		logger.info("call findMyPost() method in PostController");
+		
+		userVO = userService.findUserById(id);
+		logger.info("userVO: " + userVO);
+		
+		Long userId = userVO.getId();
+		List<PostAndUserVO> myPostList = postService.findMyPost(userId);
+		logger.info("myPostList: " + myPostList);
+		
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(myPostList);
 		return responseData;
 	}
+	
+	// 글 상세 조회 API
+	
 
 }

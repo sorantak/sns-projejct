@@ -69,11 +69,11 @@ public class UserController {
 	
 	// id로 조회
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
-	// @RequestParam("id")는 아마 쿼리문에서 가져온 것? Long id는 vo에서
+	// @RequestParam("id")를 long 형식의 인자로
 	public ResponseData findUserById(@RequestParam("id") Long id) throws Exception {
 		logger.info("call findUserById() method in UserController");
 		
-		// userVO 객체에 쿼리문 담아줌
+		// userVO 객체에 쿼리문 실행한 것 담아줌
 		userVO = userService.findUserById(id);
 		System.out.println("userVO: " + userVO);
 		

@@ -51,4 +51,14 @@ public class PostDAOImpl implements PostDAO {
 		return result;
 	}
 
+	// 내가 쓴 글 리스트 조회  API
+	@Override
+	public List<PostAndUserVO> findMyPost(Long id) throws DataAccessException {
+		logger.info("call findMyPost() method in PostDAOImpl");
+		
+		List<PostAndUserVO> result = sqlSession.selectList(Namespace + ".findMyPost", id);
+		return result;
+	}
+
+
 }

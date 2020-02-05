@@ -27,7 +27,7 @@
 		<result column="content" property="content" />
 		<result column="created_at" property="createdAt" />
 	</resultMap>
-	
+
 	<resultMap type="postAndUserVO" id="postAndUserResult">
 		<result column="id" property="id" />
 		<result column="user_id" property="userId" />
@@ -36,7 +36,7 @@
 		<result column="created_at" property="createdAt" />
 		<association property="user" resultMap="UserNoPw"></association>
 	</resultMap>
-	
+
 	<resultMap type="userVO" id="UserNoPw">
 		<result column="id" property="id" />
 		<result column="username" property="username" />
@@ -120,6 +120,17 @@
 			FROM post
 			LEFT OUTER JOIN user
 			ON post.user_id = user.id;
+		]]>
+	</select>
+
+	<!-- 내가 쓴 글 리스트 조회 -->
+	<select id="findMyPost" resultMap="postAndUserResult" parameterType="Long">
+		<![CDATA[
+			SELECT post.id, post.user_id, post.title, post.content, post.created_at, user.id, user.username, user.created_at
+			FROM post
+			LEFT OUTER JOIN user
+			ON post.user_id = user.id
+			WHERE user.id=#{id};
 		]]>
 	</select>
 

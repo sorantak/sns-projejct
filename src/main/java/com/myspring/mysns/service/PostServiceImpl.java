@@ -42,5 +42,13 @@ public class PostServiceImpl implements PostService {
 		logger.info("call findAllPost() method in PostServiceImpl");
 		return postDAO.findAllPost();
 	}
+
+	// 내가 쓴 글 리스트 조회  API
+	@Override
+	public List<PostAndUserVO> findMyPost(Long id) throws DataAccessException {
+		logger.info("call findMyPost() method in PostServiceImpl");
+		return postDAO.findMyPost(id);
+	}
+	
 	
 }

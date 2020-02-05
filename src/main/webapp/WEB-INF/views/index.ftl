@@ -33,7 +33,7 @@ body {
 
 	<div class="container">
 	
-		<#if user??>
+		<#if true>
 			<div class="my-5"></div>
 			<ul class="nav nav-tabs">
 				 <li class="nav-item">

@@ -20,4 +20,6 @@ public interface PostDAO {
 	// 계층형 테이블 만들어서 전체 조회
 	public List<PostAndUserVO> findAllPost() throws DataAccessException;
 	
+	// 내가 쓴 글 리스트 조회  API
+	public List<PostAndUserVO> findMyPost(Long id) throws DataAccessException;
 }

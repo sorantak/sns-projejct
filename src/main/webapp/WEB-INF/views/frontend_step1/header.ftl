@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
 		<a class="navbar-brand" href="/">CODEPRESSO SNS</a>
-		<#if user??>
+		<#if true>
 		<div class="row">
 			<button class="btn btn-secondary mx-3" id="create_btn" data-toggle="modal"
 			data-target="#create_post_modal">Create Post</button>
