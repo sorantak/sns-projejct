@@ -36,9 +36,6 @@ public class UserController {
 	
 	@Autowired
 	ResponseData responseData;
-	
-	@Autowired
-	RandomToken randomToken;
 
 	// 1) 회원정보 조회 API
 	// 전체 조회
@@ -127,7 +124,7 @@ public class UserController {
 		System.out.println("user id: " + id);
 		
 		// 3) token 생성
-		StringBuffer token = randomToken.createToken();
+		StringBuffer token = RandomToken.createToken();
 		System.out.println("token: " + token);
 		
 		// 4) token toString

@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.myspring.mysns.domain.PostAndUserVO;
 import com.myspring.mysns.domain.PostVO;
+import com.myspring.mysns.domain.ResponseData;
 
 public interface PostService {
 	
@@ -22,4 +23,10 @@ public interface PostService {
 
 	// 내가 쓴 글 리스트 조회  API
 	public List<PostAndUserVO> findMyPost(Long id) throws DataAccessException;
+	
+	// 글 상세 조회 API
+	public PostAndUserVO postDetailById(Long id) throws DataAccessException;
+
+	public ResponseData deletePostById(Long id) throws DataAccessException;
+	
 }

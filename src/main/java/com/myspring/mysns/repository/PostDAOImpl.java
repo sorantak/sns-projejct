@@ -20,7 +20,7 @@ public class PostDAOImpl implements PostDAO {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	private static final String Namespace = "com.myspring.mysns.mappers.mappers";
+	private static final String Namespace = "com.myspring.mysns.mappers.post";
 	
 	// 글 저장 API
 	// 글 저장
@@ -59,6 +59,20 @@ public class PostDAOImpl implements PostDAO {
 		List<PostAndUserVO> result = sqlSession.selectList(Namespace + ".findMyPost", id);
 		return result;
 	}
+	
+	// 글 상세 조회 API
+	@Override
+	public PostAndUserVO postDetailById(Long id) throws DataAccessException {
+		logger.info("call postDetailById() method in PostDAOImpl");
+		
+		PostAndUserVO result = sqlSession.selectOne(Namespace + ".PostDetailById", id);
+		return result;
+	}
 
-
+	@Override
+	public int deletePostById(Long id) throws DataAccessException {
+		int result = sqlSession.delete(Namespace + ".deletePostById", id);
+		return result;
+	}
+	
 }

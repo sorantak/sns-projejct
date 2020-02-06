@@ -12,7 +12,7 @@ public class RandomToken {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RandomToken.class);
 	
-	public StringBuffer createToken() {
+	public static StringBuffer createToken() {
 		logger.info("call createToken() method in RandomToken");
 		
 		StringBuffer temp = new StringBuffer();

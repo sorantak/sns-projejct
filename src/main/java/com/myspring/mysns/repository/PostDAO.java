@@ -22,4 +22,9 @@ public interface PostDAO {
 	
 	// 내가 쓴 글 리스트 조회  API
 	public List<PostAndUserVO> findMyPost(Long id) throws DataAccessException;
+	
+	// 글 상세 조회 API
+	public PostAndUserVO postDetailById(Long id) throws DataAccessException;
+
+	public int deletePostById(Long id) throws DataAccessException;
 }

@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
 	@Autowired
 	private SqlSession sqlSession; 
 	
-	private static final String Namespace = "com.myspring.mysns.mappers.mappers";
+	private static final String Namespace = "com.myspring.mysns.mappers.user";
 	
 	// 전체 조회
 	@Override
