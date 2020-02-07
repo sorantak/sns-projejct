@@ -1,5 +1,6 @@
 package com.myspring.mysns.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ public class PostAndUserVO {
 	private Long userId;
 	private String title;
 	private String content;
-	private Date createdAt;
+	private String createdAt;
 	private UserVO User;
 	
 	public PostAndUserVO() {
@@ -54,13 +55,16 @@ public class PostAndUserVO {
 		this.content = content;
 	}
 
-	public Date getCreatedAt() {
+	public String getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+	public void setCreatedAt() {
+	      Date now = new Date();
+	      SimpleDateFormat B = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	      String dateform = B.format(now);
+	      this.createdAt = dateform;
+	   }
 
 	public UserVO getUser() {
 		return User;

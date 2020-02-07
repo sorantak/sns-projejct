@@ -27,6 +27,6 @@ public interface PostService {
 	// 글 상세 조회 API
 	public PostAndUserVO postDetailById(Long id) throws DataAccessException;
 
-	public ResponseData deletePostById(Long id) throws DataAccessException;
+	public ResponseData deletePostById(Long id) throws Exception;
 	
 }

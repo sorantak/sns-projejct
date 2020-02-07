@@ -3,10 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- namespace와 id를 이용해서 DAO의 메소드와 연결, 쿼리문이 db랑 연동하도록 함 -->
 <mapper namespace="com.myspring.mysns.mappers.user">
 
-	<!-- resultMap은 DB에 있는 데이터들을 묶어줌 column은 MySQL의 key, property는 vo의 변수 -->
 	<resultMap type="userVO" id="userResult">
 		<result column="id" property="id" />
 		<result column="username" property="username" />
@@ -20,8 +18,6 @@
 		<result column="created_at" property="createdAt" />
 	</resultMap>
 
-	<!-- 쿼리문의 id들 -->
-	<!-- parameterType 주의. list니까 map으로 보여줘야 하는 것? -->
 	<select id="findAllUsersList" resultMap="userResult">
 		<![CDATA[
 			SELECT * FROM user
@@ -36,7 +32,6 @@
 		]]>
 	</select>
 
-	<!-- insert라서 다른 sql문하고 조금 다른 형태 -->
 	<insert id="saveUser" parameterType="userVO" keyProperty="id"
 		useGeneratedKeys="true">
 		<![CDATA[

@@ -79,6 +79,7 @@ public class PostServiceImpl implements PostService {
 			responseData.setMessage("ERROR");
 			responseData.setData(null);
 		}
+		
 		return responseData;
 	}
 
