@@ -1,6 +1,7 @@
 package com.myspring.mysns.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,8 +29,8 @@ public class MainController {
 		return mav;
 	}
 	
-	@RequestMapping("/detail")
-	public ModelAndView detail() {
+	@RequestMapping("/post/detail/{id}")
+	public ModelAndView detail(@PathVariable("id") Long id) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("detail");
 		return mav;

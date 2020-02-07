@@ -39,11 +39,7 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	UserVO userVO;
 
-	// 글 저장 API
-	// 글 저장
 	public ResponseData savePost(PostVO postVO, String accesstoken) throws DataAccessException {
-		tokenVO.setToken(accesstoken);
-		logger.info("accesstoken: " + accesstoken);
 
 		TokenVO userByToken = userService.viewUserByToken(accesstoken);
 		logger.info("user by Token: " + userByToken);
@@ -64,16 +60,11 @@ public class PostServiceImpl implements PostService {
 		return responseData;
 	}
 
-	// 전체 글 리스트 조회 API
-	// 계층형 테이블 만들어서 전체 조회
 	@Override
 	public ResponseData findAllPost() throws DataAccessException {
 		logger.info("call findAllPost() method in PostServiceImpl");
 		List<PostAndUserVO> postList = postDAO.findAllPost();
-		for (PostAndUserVO pau : postList) {
-			logger.info("postList: " + pau);
-		}
-
+		
 		responseData.setCode(HttpStatus.OK);
 		responseData.setMessage("SUCCESS");
 		responseData.setData(postList);
@@ -81,23 +72,15 @@ public class PostServiceImpl implements PostService {
 		return responseData;
 	}
 
-	// 내가 쓴 글 리스트 조회 API
 	@Override
 	public ResponseData findMyPost(String accesstoken) throws DataAccessException {
 		logger.info("call findMyPost() method in PostServiceImpl");
-
-		tokenVO.setToken(accesstoken);
-		logger.info("accesstoken: " + accesstoken);
 
 		TokenVO userByToken = userService.viewUserByToken(accesstoken);
 		logger.info("user by Token: " + userByToken);
 
 		Long userId = userByToken.getUserId();
 		logger.info("user id: " + userId);
-
-		userVO.setId(userId);
-		UserVO user = userService.findUserById(userId);
-		logger.info("user: " + user);
 
 		List<PostAndUserVO> myPostList = postDAO.findMyPost(userId);
 		logger.info("myPostList: " + myPostList);
@@ -109,7 +92,6 @@ public class PostServiceImpl implements PostService {
 		return responseData;
 	}
 
-	// 글 상세 조회 API
 	@Override
 	public ResponseData postDetailById(Long id) throws DataAccessException {
 		logger.info("call postDetailById() method in PostServiceImpl");
@@ -122,7 +104,7 @@ public class PostServiceImpl implements PostService {
 
 		return responseData;
 	}
-
+	
 	@Override
 	public ResponseData deletePostById(Long id) throws DataAccessException {
 		logger.info("call deletePostById() method in PostServiceImpl");

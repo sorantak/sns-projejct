@@ -6,11 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.myspring.mysns.domain.ResponseData;
 import com.myspring.mysns.domain.TokenVO;
 import com.myspring.mysns.domain.UserVO;
 import com.myspring.mysns.repository.UserDAO;
+import com.myspring.mysns.util.RandomToken;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -18,42 +21,81 @@ public class UserServiceImpl implements UserService {
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
-	private UserDAO dao;
+	private UserDAO userDAO;
+	
+	@Autowired
+	ResponseData responseData;
+	
+	@Autowired
+	UserVO userVO;
+	
+	@Autowired
+	TokenVO tokenVO;
 	
 	@Override
-	public List<UserVO> findAllUsersList() throws DataAccessException {
+	public ResponseData findAllUsersList() throws DataAccessException {
 		logger.info("call findAllUsersList() method in UserService");
-		return dao.findAllUsersList();
+		List<UserVO> userList = userDAO.findAllUsersList();
+		
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(userList);
+		
+		return responseData;
 	}
 
 	@Override
-	public UserVO findUserById(Long id) throws DataAccessException {
+	public ResponseData findUserById(Long id) throws DataAccessException {
 		logger.info("call findUserById() method in UserService");
-		return dao.findUserById(id);
+		
+		userVO = userDAO.findUserById(id);
+		
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(userVO);
+		
+		return responseData;
 	}
 
 	@Override
-	public int saveUser(UserVO userVO) throws DataAccessException {
+	public ResponseData saveUser(UserVO userVO) throws DataAccessException {
 		logger.info("call saveUser() method in UserService");
-		return dao.saveUser(userVO);
+		
+		userDAO.saveUser(userVO);
+		
+		Long id = userVO.getId();
+		userVO = userDAO.findUserById(id);
+		
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(userVO);
+		
+		return responseData;
 	}
 	
 	@Override
-	public UserVO logIn(UserVO userVO) throws DataAccessException {
-		logger.info("call logIn() method in UserService");
-		return dao.logInByUser(userVO);
-	}
-
-	@Override
-	public int createToken(TokenVO tokenVO) throws DataAccessException {
-		logger.info("call createToken() method in UserService");
-		return dao.createToken(tokenVO);
-	}
-
-	@Override
-	public TokenVO viewUserByToken(String token) throws DataAccessException {
-		logger.info("call viewUserByToken() method in UserService");
-		return dao.viewUserByToken(token);
+	public ResponseData FindUserByToken(UserVO userVO) throws DataAccessException {
+		logger.info("call authorizeUserByToken() method in UserService");
+		
+		userDAO.logInByUser(userVO);
+		Long id = userVO.getId();
+		
+		StringBuffer token = RandomToken.createToken();
+		
+		String tokenToString = token.toString();
+		
+		tokenVO.setUserId(id);
+		tokenVO.setToken(tokenToString);
+		
+		userDAO.createToken(tokenVO);
+		
+		userDAO.viewUserByToken(tokenToString);
+		
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(tokenVO);
+		
+		return responseData;
 	}
 
 }
