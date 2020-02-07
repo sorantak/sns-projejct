@@ -1,13 +1,9 @@
 package com.myspring.mysns.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +16,6 @@ import com.myspring.mysns.domain.ResponseData;
 import com.myspring.mysns.domain.TokenVO;
 import com.myspring.mysns.domain.UserVO;
 import com.myspring.mysns.service.PostService;
-import com.myspring.mysns.service.UserService;
 
 // *Postman으로 실습*
 @RestController
@@ -30,43 +25,28 @@ public class PostController {
 
 	@Autowired
 	ResponseData responseData;
+
 	@Autowired
 	PostVO postVO;
+
 	@Autowired
 	private PostService postService;
-	@Autowired
-	private UserService userService;
+
 	@Autowired
 	TokenVO tokenVO;
+
 	@Autowired
 	PostAndUserVO postAndUserVO;
+
 	@Autowired
 	UserVO userVO;
 
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
-	public ResponseData savePost(@RequestBody PostVO postVO, HttpServletRequest request) throws Exception {
+	public ResponseData savePost(@RequestBody PostVO postVO, @CookieValue(value = "accesstoken") String accesstoken)
+			throws Exception {
 		logger.info("call savePost() method in PostController");
 
-		String tokenCookie = request.getHeader("accesstoken");
-		logger.info("accesstoken: " + tokenCookie);
-
-		tokenVO.setToken(tokenCookie);
-
-		TokenVO tokenVO = userService.viewUserByToken(tokenCookie);
-		logger.info("tokenVO: " + tokenVO);
-
-		Long userId = tokenVO.getUserId();
-		postVO.setUserId(userId);
-		logger.info("postVO: " + postVO);
-
-		postService.savePost(postVO);
-
-		Long id = postVO.getId();
-		PostVO result = postService.findPostById(id);
-
-		responseData.setCode(HttpStatus.OK);
-		responseData.setMessage("SUCCESS");
-		responseData.setData(result);
+		postService.savePost(postVO, accesstoken);
 
 		return responseData;
 	}
@@ -75,44 +55,17 @@ public class PostController {
 	public ResponseData findAllPost() throws Exception {
 		logger.info("call findAllPost() method in PostController");
 
-		List<PostAndUserVO> postList = postService.findAllPost();
-		for (PostAndUserVO pau : postList) {
-			logger.info("postList: " + pau);
-		}
-
-		responseData.setCode(HttpStatus.OK);
-		responseData.setMessage("SUCCESS");
-		responseData.setData(postList);
-
-		logger.info("전체 글 리스트 조회 API: " + responseData);
+		postService.findAllPost();
 
 		return responseData;
 	}
 
 	@RequestMapping(value = "/post/my", method = RequestMethod.GET)
-	public ResponseData findMyPost(HttpServletRequest request) throws Exception {
+	public ResponseData findMyPost(@CookieValue(value = "accesstoken") String accesstoken) throws Exception {
+		logger.info("call findMyPost() method in PostController");
 
-		String tokenCookie = request.getHeader("accesstoken");
-		logger.info("accesstoken: " + tokenCookie);
+		postService.findMyPost(accesstoken);
 
-		tokenVO.setToken(tokenCookie);
-
-		TokenVO tokenVO = userService.viewUserByToken(tokenCookie);
-		logger.info("tokenVO: " + tokenVO);
-
-		Long userId = tokenVO.getUserId();
-		logger.info("user id: " + userId);
-
-		userVO.setId(userId);
-		UserVO user = userService.findUserById(userId);
-		logger.info("user: " + user);
-
-		List<PostAndUserVO> myPostList = postService.findMyPost(userId);
-		logger.info("myPostList: " + myPostList);
-
-		responseData.setCode(HttpStatus.OK);
-		responseData.setMessage("SUCCESS");
-		responseData.setData(myPostList);
 		return responseData;
 	}
 
@@ -120,12 +73,7 @@ public class PostController {
 	public ResponseData postDetailById(@PathVariable("postId") Long id) throws Exception {
 		logger.info("call postDetailById() method in PostController");
 
-		PostAndUserVO postDetail = postService.postDetailById(id);
-		logger.info("vo: " + postDetail.toString());
-
-		responseData.setCode(HttpStatus.OK);
-		responseData.setMessage("SUCCESS");
-		responseData.setData(postDetail);
+		postService.postDetailById(id);
 
 		return responseData;
 	}
