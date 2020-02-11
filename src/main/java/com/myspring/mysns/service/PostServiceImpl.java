@@ -15,6 +15,7 @@ import com.myspring.mysns.domain.TokenVO;
 import com.myspring.mysns.domain.UserVO;
 import com.myspring.mysns.domain.PostAndUserVO;
 import com.myspring.mysns.repository.PostDAO;
+import com.myspring.mysns.repository.UserDAO;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -38,10 +39,13 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	UserVO userVO;
+	
+	@Autowired
+	UserDAO userDAO;
 
 	public ResponseData savePost(PostVO postVO, String accesstoken) throws DataAccessException {
 
-		TokenVO userByToken = userService.viewUserByToken(accesstoken);
+		TokenVO userByToken = userDAO.viewUserByToken(accesstoken);
 		logger.info("user by Token: " + userByToken);
 
 		Long userId = userByToken.getUserId();
@@ -76,7 +80,7 @@ public class PostServiceImpl implements PostService {
 	public ResponseData findMyPost(String accesstoken) throws DataAccessException {
 		logger.info("call findMyPost() method in PostServiceImpl");
 
-		TokenVO userByToken = userService.viewUserByToken(accesstoken);
+		TokenVO userByToken = userDAO.viewUserByToken(accesstoken);
 		logger.info("user by Token: " + userByToken);
 
 		Long userId = userByToken.getUserId();

@@ -75,10 +75,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public ResponseData FindUserByToken(UserVO userVO) throws DataAccessException {
-		logger.info("call authorizeUserByToken() method in UserService");
+		logger.info("call FindUserByToken() method in UserService");
 		
-		userDAO.logInByUser(userVO);
-		Long id = userVO.getId();
+		UserVO user = userDAO.logInByUser(userVO);
+		Long id = user.getId();
 		
 		StringBuffer token = RandomToken.createToken();
 		
@@ -97,5 +97,6 @@ public class UserServiceImpl implements UserService {
 		
 		return responseData;
 	}
+
 
 }

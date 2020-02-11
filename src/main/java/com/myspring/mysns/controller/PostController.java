@@ -27,7 +27,7 @@ public class PostController {
 	private PostService postService;
 
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
-	public ResponseData savePost(@RequestBody PostVO postVO, @CookieValue(value = "accesstoken") String accesstoken)
+	public ResponseData savePost(@RequestBody PostVO postVO, @CookieValue(value = "accesstoken", required = false) String accesstoken)
 			throws Exception {
 		logger.info("call savePost() method in PostController");
 
@@ -42,7 +42,7 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/post/my", method = RequestMethod.GET)
-	public ResponseData findMyPost(@CookieValue(value = "accesstoken") String accesstoken) throws Exception {
+	public ResponseData findMyPost(@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
 		logger.info("call findMyPost() method in PostController");
 
 		return postService.findMyPost(accesstoken);

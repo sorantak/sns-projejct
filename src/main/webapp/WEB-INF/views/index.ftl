@@ -33,11 +33,11 @@ body {
 
 	<div class="container">
 	
-		<#if true>
+		<#if user??>
 			<div class="my-5"></div>
 			<ul class="nav nav-tabs">
 				 <li class="nav-item">
-				 	<a class="nav-link active" data-toggle="tab" href="#myfeed">My Posts</a>
+				 	<a class="nav-link active" data-toggle="tab" href="#myfeed">My Feed</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="tab" href="#posts">All Posts</a>

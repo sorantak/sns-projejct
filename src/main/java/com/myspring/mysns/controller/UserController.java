@@ -21,7 +21,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	@RequestMapping(value = "/allUsers", method = RequestMethod.GET)
 	public ResponseData findAllUsersList() throws Exception {
 		logger.info("call findAllUsersList() method in UserController");
 		

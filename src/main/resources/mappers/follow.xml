@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myspring.mysns.mappers.follow">
+
+	<resultMap type="followVO" id="followResult">
+		<result column="followee_id" property="followeeId" />
+		<result column="follower_id" property="followerId" />
+		<result column="created_at" property="createdAt" />
+	</resultMap>
+
+	<insert id="followUser" parameterType="followVO" >
+		<![CDATA[
+			INSERT INTO follow(followee_id, follower_id) 
+			VALUES(#{followeeId},#{followerId})
+		]]>
+	</insert>
+	
+</mapper>
