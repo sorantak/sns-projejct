@@ -13,20 +13,28 @@ import com.myspring.mysns.domain.FollowVO;
 public class FollowDAOImpl implements FollowDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(FollowDAOImpl.class);
-	
+
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	private static final String Namespace = "com.myspring.mysns.mappers.follow";
 
 	@Override
 	public int followUser(FollowVO followeeId) throws DataAccessException {
 		logger.info("call followUser()");
-		
+
 		int result = sqlSession.insert(Namespace + ".followUser", followeeId);
-		
+
 		return result;
 	}
-	
-	
+
+	@Override
+	public int unfollowUser(FollowVO followeeId) throws DataAccessException {
+		logger.info("call unfollowUser()");
+		
+		int result = sqlSession.insert(Namespace + ".unfollowUser", followeeId);
+
+		return result;
+	}
+
 }

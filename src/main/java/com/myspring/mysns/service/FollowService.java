@@ -7,4 +7,6 @@ public interface FollowService {
 
 	public ResponseData followUser(FollowVO followeeId, String accesstoken);
 
+	public ResponseData unfollowUser(FollowVO followeeId, String accesstoken);
+
 }

@@ -15,26 +15,29 @@ import com.myspring.mysns.service.FollowService;
 
 @RestController
 public class FollowController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(FollowController.class);
-	
+
 	@Autowired
 	private FollowService followService;
 
 	@RequestMapping(value = "/follow", method = RequestMethod.POST)
-	public ResponseData followUser(@RequestBody FollowVO followeeId, @CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
+	public ResponseData followUser(@RequestBody FollowVO followeeId,
+			@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
 		logger.info("call followUser()");
 		return followService.followUser(followeeId, accesstoken);
 	}
-	
+
 	@RequestMapping(value = "/follow", method = RequestMethod.DELETE)
-	public ResponseData unfollowUser(@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
+	public ResponseData unfollowUser(@RequestBody FollowVO followeeId,
+			@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
 		logger.info("call unfollowUser()");
-		return null;
+		return followService.unfollowUser(followeeId, accesstoken);
 	}
-	
+
 	@RequestMapping(value = "/post/feed", method = RequestMethod.GET)
-	public ResponseData viewMyFeedList(@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
+	public ResponseData viewMyFeedList(@CookieValue(value = "accesstoken", required = false) String accesstoken)
+			throws Exception {
 		logger.info("call viewMyFeedList()");
 		return null;
 	}

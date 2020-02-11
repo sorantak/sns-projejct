@@ -57,6 +57,26 @@ public class FollowServiceImpl implements FollowService{
 		responseData.setData("SUCCESS");
 		return responseData;
 	}
-	
+
+	@Override
+	public ResponseData unfollowUser(FollowVO followeeId, String accesstoken) {
+		logger.info("call unfollowUser()");
+		
+		TokenVO followerByToken = userDAO.viewUserByToken(accesstoken);
+		logger.info("follower by token: " + followerByToken);
+		
+		Long followerId = followerByToken.getUserId();
+		logger.info("follower id: " + followerId);
+		
+		followeeId.setFollowerId(followerId);
+		logger.info(followeeId.toString());
+		followDAO.unfollowUser(followeeId);
+		logger.info(followVO.toString());
+		
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("OK");
+		responseData.setData("SUCCESS");
+		return responseData;
+	}
 
 }
