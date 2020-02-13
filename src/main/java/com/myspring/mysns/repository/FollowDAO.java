@@ -12,6 +12,8 @@ public interface FollowDAO {
 	public int followUser(FollowVO followeeIdInVO) throws DataAccessException;
 
 	public int unfollowUser(FollowVO followeeId) throws DataAccessException;
+	
+	public List<FollowVO> findFollowersByFollowee(Long followeeId) throws DataAccessException;
 
 
 }

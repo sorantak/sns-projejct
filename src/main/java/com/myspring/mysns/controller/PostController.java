@@ -30,7 +30,7 @@ public class PostController {
 	public ResponseData savePost(@RequestBody PostVO postVO, @CookieValue(value = "accesstoken", required = false) String accesstoken)
 			throws Exception {
 		logger.info("call savePost() method in PostController");
-		logger.info("@@accesstoken: " + accesstoken);
+
 		return postService.savePost(postVO, accesstoken);
 	}
 

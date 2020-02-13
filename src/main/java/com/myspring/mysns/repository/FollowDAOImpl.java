@@ -38,6 +38,14 @@ public class FollowDAOImpl implements FollowDAO {
 
 		return result;
 	}
-	
 
+	@Override
+	public List<FollowVO> findFollowersByFollowee(Long followeeId) throws DataAccessException {
+		logger.info("call findFollowersByFollowee()");
+		
+		List<FollowVO> result = sqlSession.selectList(Namespace + ".findFollowersByFollowee", followeeId);
+		
+		return result;
+	}
+	
 }

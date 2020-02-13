@@ -55,5 +55,14 @@
 			WHERE followee_id=#{followeeId} AND follower_id=#{followerId}
 		]]>
 	</delete>
+	
+	<select id="findFollowersByFollowee" resultMap="followResult"
+		parameterType="Long">
+		<![CDATA[
+			SELECT followee_id, follower_id, created_at
+			FROM follow
+			WHERE followee_id=#{followeeId}
+		]]>
+	</select>
 
 </mapper>

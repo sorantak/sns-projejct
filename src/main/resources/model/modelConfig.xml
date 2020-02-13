@@ -10,5 +10,6 @@
 		<typeAlias type="com.myspring.mysns.domain.PostVO"  alias="postVO" />
 		<typeAlias type="com.myspring.mysns.domain.PostAndUserVO"  alias="postAndUserVO" />
 		<typeAlias type="com.myspring.mysns.domain.FollowVO"  alias="followVO" />
+		<typeAlias type="com.myspring.mysns.domain.FeedVO"  alias="feedVO" />
 	</typeAliases>
 </configuration>
