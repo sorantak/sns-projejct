@@ -9,11 +9,14 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.myspring.mysns.domain.FeedVO;
 import com.myspring.mysns.domain.FollowVO;
 import com.myspring.mysns.domain.PostAndUserVO;
+import com.myspring.mysns.domain.PostVO;
 import com.myspring.mysns.domain.ResponseData;
 import com.myspring.mysns.domain.TokenVO;
 import com.myspring.mysns.domain.UserVO;
+import com.myspring.mysns.repository.FeedDAO;
 import com.myspring.mysns.repository.FollowDAO;
 import com.myspring.mysns.repository.PostDAO;
 import com.myspring.mysns.repository.UserDAO;
@@ -46,7 +49,16 @@ public class FollowServiceImpl implements FollowService {
 
 	@Autowired
 	PostDAO postDAO;
-
+	
+	@Autowired
+	FeedVO feedVO;
+	
+	@Autowired
+	FeedDAO feedDAO;
+	
+	@Autowired
+	PostVO postVO;
+	
 	@Override
 	public ResponseData followUser(FollowVO followeeIdInVO, String accesstoken) throws DataAccessException {
 		logger.info("call followUser()");
@@ -116,27 +128,42 @@ public class FollowServiceImpl implements FollowService {
 		logger.info("follower id: " + followerId);
 		// 여기까지는 accesstoken으로 followerId를 가져오는 것으로 위와 같음
 
-		// dao에 list로 반환해야 함
-		// createdat별로 desc 정렬
-
-		// followerid로 followeeid를 가져와야 함
-		followVO.setFollowerId(followerId);
-		Long followeeId = followVO.getFolloweeId();
-
-		// followeeid로 postid를 가져옴
-		postAndUserVO.setUserId(followeeId);
-		logger.info("postAndUserVO: " + postAndUserVO);
-		List<PostAndUserVO> result = postDAO.findMyPost(followeeId);
-
-		responseData.setData(result);
-		logger.info("result: " + result);
-
-		/*
-		 * feedVO.setUserId(userId); List<FeedVO> feedList =
-		 * followDAO.viewFeedListByUser(userId);
-		 */
+		// followerId를 feedVO에 넣어줌
+		feedVO.setUserId(followerId);
+		logger.info("set followerId in feedVO: " + feedVO);
+		
+		// followerId로 나의 followees를 찾는 쿼리문 실행
+		// 최소 1개 이상인 데이터이므로 List 형식
+		List<FeedVO> followees = feedDAO.findFolloweeByUser(followerId); // 에러시작
+		logger.info("followees 찾는 중: " + followees);
+		
+		PostAndUserVO[] followeePostList = new PostAndUserVO[followees.size()];
+		for (int i = 0; i < followeePostList.length; i++) {
+			PostAndUserVO postAndUserVO = new PostAndUserVO();
+			
+			Long postId = followees.get(i).getPostId();
+			postVO = postDAO.findPostById(postId);
+			postAndUserVO.setId(postId);
+			Long userId = postVO.getUserId();
+			postAndUserVO.setUserId(userId);
+			String title = postVO.getTitle();
+			postAndUserVO.setTitle(title);
+			String content = postVO.getContent();
+			postAndUserVO.setContent(content);
+			String createdAt = postVO.getCreatedAt();
+			postAndUserVO.setCreatedAt(createdAt);
+			userVO = userDAO.findUserById(userId);
+			postAndUserVO.setUser(userVO);
+			followeePostList[i] = postAndUserVO;
+		}
+		
+		responseData.setCode(HttpStatus.OK);
+		responseData.setMessage("SUCCESS");
+		responseData.setData(followeePostList);
+		logger.info("내 followee들의 post: " + followeePostList);
 
 		return responseData;
+
 	}
 
 }

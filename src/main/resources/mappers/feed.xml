@@ -15,8 +15,14 @@
 	<insert id="insertFeed" parameterType="feedVO">
 		<![CDATA[
 			INSERT INTO feed(user_id, followee_id, post_id) 
-			VALUES(#{userId}, #{followeeId}, #{postId})
+			VALUES(#{userId}, #{followeeId}, #{postId});
 		]]>
 	</insert>
+	
+	<select id="findFolloweeByUser" resultMap="feedResult" parameterType="Long">
+		<![CDATA[
+			SELECT * FROM feed WHERE user_id=#{userId};
+		]]>
+	</select>
 	
 </mapper>

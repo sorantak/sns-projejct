@@ -1,5 +1,7 @@
 package com.myspring.mysns.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,15 @@ public class FeedDAOImpl implements FeedDAO {
 		logger.info("call insertFeed()");
 		
 		int result = sqlSession.insert(Namespace + ".insertFeed", feedVO);
+
+		return result;
+	}
+
+	@Override
+	public List<FeedVO> findFolloweeByUser(Long userId) throws DataAccessException {
+		logger.info("call findFolloweeByUser()");
+		
+		List<FeedVO> result = sqlSession.selectList(Namespace + ".findFolloweeByUser", userId);
 
 		return result;
 	}

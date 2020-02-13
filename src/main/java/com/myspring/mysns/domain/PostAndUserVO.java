@@ -59,7 +59,7 @@ public class PostAndUserVO {
 		return createdAt;
 	}
 
-	public void setCreatedAt() {
+	public void setCreatedAt(String createdAt) {
 	      Date now = new Date();
 	      SimpleDateFormat B = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	      String dateform = B.format(now);
