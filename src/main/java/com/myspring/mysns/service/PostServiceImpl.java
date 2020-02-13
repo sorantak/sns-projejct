@@ -13,7 +13,9 @@ import com.myspring.mysns.domain.PostVO;
 import com.myspring.mysns.domain.ResponseData;
 import com.myspring.mysns.domain.TokenVO;
 import com.myspring.mysns.domain.UserVO;
+import com.myspring.mysns.domain.FollowVO;
 import com.myspring.mysns.domain.PostAndUserVO;
+import com.myspring.mysns.repository.FollowDAO;
 import com.myspring.mysns.repository.PostDAO;
 import com.myspring.mysns.repository.UserDAO;
 
@@ -42,6 +44,12 @@ public class PostServiceImpl implements PostService {
 	
 	@Autowired
 	UserDAO userDAO;
+	
+	@Autowired
+	FollowVO followVO;
+	
+	@Autowired
+	FollowDAO followDAO;
 
 	public ResponseData savePost(PostVO postVO, String accesstoken) throws DataAccessException {
 
@@ -56,7 +64,18 @@ public class PostServiceImpl implements PostService {
 
 		Long id = postVO.getId();
 		PostVO result = postDAO.findPostById(id);
-
+		/*
+		// feed 테이블에 정보를 넣어줌(id는 postId, userId는 followeeId)
+		followVO.setFolloweeId(userId);
+		List<FollowVO> findFollower = followDAO.findFollowerByFollowee; // findFollowerByFollowee = SELECT * FROM follow WHERE followeeId=post의 user;
+		
+		for (int j = 0; j < findFollower.length; j++) {
+			feedVO.setUserId(findFollower.getFollowerId());
+			feedVO.setFolloweeId(userId);
+			feedVO.setPostId(id);
+			feedDAO.insertFeed(feedVO);
+		}*/
+	
 		responseData.setCode(HttpStatus.OK);
 		responseData.setMessage("SUCCESS");
 		responseData.setData(result);
