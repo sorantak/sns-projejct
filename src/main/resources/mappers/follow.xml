@@ -10,6 +10,37 @@
 		<result column="follower_id" property="followerId" />
 		<result column="created_at" property="createdAt" />
 	</resultMap>
+<!--  
+	<resultMap type="feedVO" id="feedResult">
+		<result column="user_id" property="userId" />
+		<result column="followee_id" property="followeeId" />
+		<result column="post_id" property="postId" />
+		<result column="created_at" property="createdAt" />
+	</resultMap>
+
+
+	<resultMap type="postVO" id="postResult">
+		<result column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="created_at" property="createdAt" />
+	</resultMap>
+	
+	<resultMap type="userVO" id="UserNoPw">
+		<result column="user_id" property="id" />
+		<result column="username" property="username" />
+		<result column="created_at" property="userCreatedAt" />
+	</resultMap>
+	
+	<resultMap type="postAndUserVO" id="postAndUserResult">
+		<result column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="created_at" property="createdAt" />
+		<association property="user" resultMap="UserNoPw"></association>
+	</resultMap>-->
 
 	<insert id="followUser" parameterType="followVO">
 		<![CDATA[

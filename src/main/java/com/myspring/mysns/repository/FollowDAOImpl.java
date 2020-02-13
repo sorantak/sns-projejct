@@ -1,5 +1,7 @@
 package com.myspring.mysns.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +22,10 @@ public class FollowDAOImpl implements FollowDAO {
 	private static final String Namespace = "com.myspring.mysns.mappers.follow";
 
 	@Override
-	public int followUser(FollowVO followeeId) throws DataAccessException {
+	public int followUser(FollowVO followeeIdInVO) throws DataAccessException {
 		logger.info("call followUser()");
 
-		int result = sqlSession.insert(Namespace + ".followUser", followeeId);
+		int result = sqlSession.insert(Namespace + ".followUser", followeeIdInVO);
 
 		return result;
 	}
@@ -31,10 +33,11 @@ public class FollowDAOImpl implements FollowDAO {
 	@Override
 	public int unfollowUser(FollowVO followeeId) throws DataAccessException {
 		logger.info("call unfollowUser()");
-		
+
 		int result = sqlSession.insert(Namespace + ".unfollowUser", followeeId);
 
 		return result;
 	}
+	
 
 }

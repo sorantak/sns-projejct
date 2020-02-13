@@ -22,10 +22,10 @@ public class FollowController {
 	private FollowService followService;
 
 	@RequestMapping(value = "/follow", method = RequestMethod.POST)
-	public ResponseData followUser(@RequestBody FollowVO followeeId,
+	public ResponseData followUser(@RequestBody FollowVO followeeIdInVO,
 			@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
 		logger.info("call followUser()");
-		return followService.followUser(followeeId, accesstoken);
+		return followService.followUser(followeeIdInVO, accesstoken);
 	}
 
 	@RequestMapping(value = "/follow", method = RequestMethod.DELETE)
@@ -39,6 +39,6 @@ public class FollowController {
 	public ResponseData viewMyFeedList(@CookieValue(value = "accesstoken", required = false) String accesstoken)
 			throws Exception {
 		logger.info("call viewMyFeedList()");
-		return null;
+		return followService.viewMyFeedList(accesstoken);
 	}
 }
