@@ -48,8 +48,10 @@ public class UserController {
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	public ResponseData FindUserByToken(@RequestBody UserVO userVO) throws Exception {
 		logger.info("call FindUserByToken() method in UserController");
+		ResponseData result = userService.FindUserByToken(userVO);
+		logger.info("result: " + result);
 		
-		return userService.FindUserByToken(userVO);
+		return result;
 		
 	}
 

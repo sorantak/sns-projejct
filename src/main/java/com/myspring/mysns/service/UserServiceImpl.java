@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseData FindUserByToken(UserVO userVO) throws DataAccessException {
 		logger.info("call FindUserByToken() method in UserService");
-
+		
 		UserVO user = userDAO.logInByUser(userVO);
 		Long id = user.getId();
 
@@ -97,7 +97,9 @@ public class UserServiceImpl implements UserService {
 
 		userDAO.createToken(tokenVO);
 
-		userDAO.viewUserByToken(tokenToString);
+		TokenVO resultToken = userDAO.viewUserByToken(tokenToString);
+		
+		logger.info("token: " + tokenToString);
 
 		// 로그인할 때 나 자신을 follow
 		try {
@@ -111,10 +113,12 @@ public class UserServiceImpl implements UserService {
 
 			return responseData;
 		} catch (Exception e) {
+			logger.info("나 자신 follow 에러 예외처리");
 			e.printStackTrace();
-			responseData.setCode(HttpStatus.INTERNAL_SERVER_ERROR);
-			responseData.setMessage("INTERNAL_SERVER_ERROR");
-			responseData.setData("FAIL");
+			
+			responseData.setCode(HttpStatus.OK);
+			responseData.setMessage("SUCCESS");
+			responseData.setData(resultToken);
 			return responseData;
 		}
 	}
