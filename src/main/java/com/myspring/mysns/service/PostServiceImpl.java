@@ -1,5 +1,6 @@
 package com.myspring.mysns.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -43,19 +44,19 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	UserVO userVO;
-	
+
 	@Autowired
 	UserDAO userDAO;
-	
+
 	@Autowired
 	FollowVO followVO;
-	
+
 	@Autowired
 	FollowDAO followDAO;
-	
+
 	@Autowired
 	FeedVO feedVO;
-	
+
 	@Autowired
 	FeedDAO feedDAO;
 
@@ -72,19 +73,19 @@ public class PostServiceImpl implements PostService {
 
 		Long id = postVO.getId();
 		PostVO result = postDAO.findPostById(id);
-		
+
 		// feed 테이블에 정보를 넣어줌(id는 postId, userId는 followeeId)
 		followVO.setFolloweeId(userId);
 		// Long followeeId = followVO.getFolloweeId();
 		List<FollowVO> findFollowers = followDAO.findFollowersByFollowee(userId);
-		
+
 		for (int j = 0; j < findFollowers.size(); j++) {
 			feedVO.setUserId(findFollowers.get(j).getFollowerId());
 			feedVO.setFolloweeId(userId);
 			feedVO.setPostId(id);
 			feedDAO.insertFeed(feedVO);
 		}
-	
+
 		responseData.setCode(HttpStatus.OK);
 		responseData.setMessage("SUCCESS");
 		responseData.setData(result);
@@ -93,10 +94,59 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public ResponseData findAllPost() throws DataAccessException {
+	public ResponseData findAllPost(String accesstoken) throws DataAccessException {
 		logger.info("call findAllPost() method in PostServiceImpl");
 		List<PostAndUserVO> postList = postDAO.findAllPost();
+		logger.info("postList.size: " + postList.size());
+		logger.info("postList: " + postList.toString());
 		
+		TokenVO userByToken = userDAO.viewUserByToken(accesstoken);
+		logger.info("user by token: " + userByToken);
+
+		Long userId = userByToken.getUserId();
+		logger.info("user id: " + userId);
+
+		List<FeedVO> followees = feedDAO.findFolloweeByUser(userId);
+		logger.info("followees.size: " + followees.size());
+		// list followeeList = feedVO.getFolloweeId();
+		// 1. post list 길이 마큼 반복
+		// 2. 하나의 pnuVO 에서 user id 가져오기
+
+		ArrayList<Long> postUser = new ArrayList<Long>(postList.size());// for문 안에서 글쓴이 id
+		ArrayList<Long> followeeList = new ArrayList<Long>(followees.size()); // for문 안에서 내가 팔로우중인 id		
+		
+		
+		for (int i = 0; i < postList.size(); i++) {
+//			logger.info( "for 1 . i = "+i);
+			postUser.add(postList.get(i).getUserId());
+			
+		}
+
+		for (int j = 0; j < followees.size(); j++) {
+//			logger.info( "for 1 . J = "+j);
+			followeeList.add(followees.get(j).getFolloweeId());
+
+		}
+
+
+		int i = 0;
+		for (Long postUserId : postUser) {// userId 하나당 10
+			boolean isFollow = false;
+			for (Long followeeId : followeeList) { // followeeId 하나씩 4
+
+				// if 로 글쓴이 id 와 내가 팔로우 중인 id 비교
+				if (postUserId.equals(followeeId)) { // 둘이 맞는지 비교
+					isFollow = true;
+					break;
+
+				} else {
+					isFollow = false;
+				}
+			}
+			postList.get(i).getUser().setIsFollow(isFollow);
+			i++;
+		}
+
 		responseData.setCode(HttpStatus.OK);
 		responseData.setMessage("SUCCESS");
 		responseData.setData(postList);
@@ -136,7 +186,7 @@ public class PostServiceImpl implements PostService {
 
 		return responseData;
 	}
-	
+
 	@Override
 	public ResponseData deletePostById(Long id) throws DataAccessException {
 		logger.info("call deletePostById() method in PostServiceImpl");

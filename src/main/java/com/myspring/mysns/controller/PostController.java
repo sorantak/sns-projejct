@@ -35,10 +35,10 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/post", method = RequestMethod.GET)
-	public ResponseData findAllPost() throws Exception {
+	public ResponseData findAllPost(@CookieValue(value = "accesstoken", required = false) String accesstoken) throws Exception {
 		logger.info("call findAllPost() method in PostController");
 
-		return postService.findAllPost();
+		return postService.findAllPost(accesstoken);
 	}
 
 	@RequestMapping(value = "/post/my", method = RequestMethod.GET)

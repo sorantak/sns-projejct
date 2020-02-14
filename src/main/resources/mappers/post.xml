@@ -26,6 +26,7 @@
 		<result column="user_id" property="id" />
 		<result column="username" property="username" />
 		<result column="created_at" property="createdAt" />
+		<result column="isFollow" property="isFollow" />
 	</resultMap>
 
 	<insert id="savePost" parameterType="postVO" keyProperty="id"
@@ -40,7 +41,7 @@
 		parameterType="Long">
 		<![CDATA[
 			SELECT * FROM post 
-			WHERE id=#{id}
+			WHERE id=#{id} ORDER BY id DESC;
 		]]>
 	</select>
 
@@ -75,8 +76,8 @@
 			ON post.user_id = user.id where post.id=#{id};
 		]]>
 	</select>
-	
-	<delete id="deletePostById" parameterType="Long" >
+
+	<delete id="deletePostById" parameterType="Long">
 		<![CDATA[
 			delete from post where id=#{id};
 		]]>

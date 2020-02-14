@@ -23,6 +23,7 @@ public class UserVO {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private String createdAt;
+	private boolean isFollow = true;
 	
 	// 변수 없는 생성자 필수
 	public UserVO() {
@@ -65,10 +66,19 @@ public class UserVO {
 	      this.createdAt = dateform;
 	   }
 
+	public boolean getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(boolean isFollow) {
+		this.isFollow = isFollow;
+	}
+
 	@Override
 	public String toString() {
-		logger.info("call toString() method in UserVO");
-		return "UserVO [id=" + id + ", username=" + username + ", password=" + password + ", createdAt=" + createdAt + "]";
+		logger.info("call toString() in UserVO");
+		return "UserVO [id=" + id + ", username=" + username + ", password=" + password + ", createdAt=" + createdAt
+				+ ", isFollow=" + isFollow + "]";
 	}
 
 }

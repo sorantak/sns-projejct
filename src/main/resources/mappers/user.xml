@@ -10,6 +10,7 @@
 		<result column="username" property="username" />
 		<result column="password" property="password" />
 		<result column="created_at" property="createdAt" />
+		<result column="isFollow" property="isFollow"/>
 	</resultMap>
 
 	<resultMap type="tokenVO" id="tokenResult">
@@ -28,7 +29,7 @@
 		parameterType="Long">
 		<![CDATA[
 			SELECT * FROM user 
-			WHERE id=#{id}
+			WHERE id=#{id} ORDER BY created_at DESC;
 		]]>
 	</select>
 
@@ -60,7 +61,7 @@
 		parameterType="String">
 		<![CDATA[
 			SELECT * FROM token
-			WHERE token=#{token}
+			WHERE token=#{token} ORDER BY user_id DESC;
 		]]>
 	</select>
 

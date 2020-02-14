@@ -21,7 +21,7 @@
 	
 	<select id="findFolloweeByUser" resultMap="feedResult" parameterType="Long">
 		<![CDATA[
-			SELECT * FROM feed WHERE user_id=#{userId};
+			SELECT * FROM feed WHERE user_id=#{userId} ORDER BY followee_id DESC;
 		]]>
 	</select>
 	

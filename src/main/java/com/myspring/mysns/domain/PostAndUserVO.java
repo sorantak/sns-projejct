@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostAndUserVO {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(PostAndUserVO.class);
-	
+
 	private Long id;
 	private Long userId;
 	private String title;
 	private String content;
 	private String createdAt;
 	private UserVO User;
-	
+
 	public PostAndUserVO() {
 		super();
 	}
@@ -59,19 +59,23 @@ public class PostAndUserVO {
 		return createdAt;
 	}
 
+	public void setCreatedAt() {
+		Date now = new Date();
+		SimpleDateFormat B = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateform = B.format(now);
+		this.createdAt = dateform;
+	}
+
 	public void setCreatedAt(String createdAt) {
-	      Date now = new Date();
-	      SimpleDateFormat B = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	      String dateform = B.format(now);
-	      this.createdAt = dateform;
-	   }
+		this.createdAt = createdAt;
+	}
 
 	public UserVO getUser() {
 		return User;
 	}
 
-	public void setUser(UserVO user) {
-		User = user;
+	public void setUser(UserVO userVO) {
+		User = userVO;
 	}
 
 	@Override
@@ -81,5 +85,5 @@ public class PostAndUserVO {
 		return "PostAndUserVO [id=" + id + ", userId=" + userId + ", title=" + title + ", content=" + content
 				+ ", createdAt=" + createdAt + ", User=" + User + "]";
 	}
-	
+
 }

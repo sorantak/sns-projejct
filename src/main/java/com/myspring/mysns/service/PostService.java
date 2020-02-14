@@ -13,7 +13,7 @@ public interface PostService {
 
 	// 전체 글 리스트 조회 API
 	// 계층형 테이블 만들어서 전체 조회
-	public ResponseData findAllPost() throws DataAccessException;
+	public ResponseData findAllPost(String accesstoken) throws DataAccessException;
 
 	// 내가 쓴 글 리스트 조회 API
 	public ResponseData findMyPost(String accesstoken) throws DataAccessException;
