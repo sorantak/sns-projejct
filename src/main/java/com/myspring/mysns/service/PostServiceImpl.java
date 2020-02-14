@@ -194,6 +194,9 @@ public class PostServiceImpl implements PostService {
 		// MyBatis 쿼리문 호출 후에 리턴값은 성공시 1, 실패시 0이 된다.
 		int result = postDAO.deletePostById(id);
 		logger.info("result: " + result);
+		
+		int feedResult = feedDAO.deleteFeedByPostId(id);
+		logger.info("feedResult :" + feedResult);
 
 		if (result == 1) {
 			responseData.setCode(HttpStatus.OK);

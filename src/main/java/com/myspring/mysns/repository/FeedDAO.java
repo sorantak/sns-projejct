@@ -12,4 +12,6 @@ public interface FeedDAO {
 
 	public List<FeedVO> findFolloweeByUser(Long userId) throws DataAccessException;
 
+	public int deleteFeedByPostId(Long id) throws DataAccessException;
+
 }

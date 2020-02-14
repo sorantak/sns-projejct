@@ -18,11 +18,17 @@
 			VALUES(#{userId}, #{followeeId}, #{postId});
 		]]>
 	</insert>
-	
-	<select id="findFolloweeByUser" resultMap="feedResult" parameterType="Long">
+
+	<select id="findFolloweeByUser" resultMap="feedResult"
+		parameterType="Long">
 		<![CDATA[
 			SELECT * FROM feed WHERE user_id=#{userId} ORDER BY followee_id DESC;
 		]]>
 	</select>
-	
+
+	<delete id="deleteFeedByPostId" parameterType="Long">
+		<![CDATA[
+			delete from feed where post_id=#{postId};
+		]]>
+	</delete>
 </mapper>

@@ -38,6 +38,14 @@ public class FeedDAOImpl implements FeedDAO {
 
 		return result;
 	}
-	
+
+	@Override
+	public int deleteFeedByPostId(Long id) throws DataAccessException {
+		logger.info("call deleteFeedByPostId()");
+		
+		int result = sqlSession.insert(Namespace + ".deleteFeedByPostId", id);
+
+		return result;
+	}
 
 }
