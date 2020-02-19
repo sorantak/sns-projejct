@@ -74,9 +74,7 @@ public class PostServiceImpl implements PostService {
 		Long id = postVO.getId();
 		PostVO result = postDAO.findPostById(id);
 
-		// feed 테이블에 정보를 넣어줌(id는 postId, userId는 followeeId)
 		followVO.setFolloweeId(userId);
-		// Long followeeId = followVO.getFolloweeId();
 		List<FollowVO> findFollowers = followDAO.findFollowersByFollowee(userId);
 
 		for (int j = 0; j < findFollowers.size(); j++) {
@@ -99,59 +97,57 @@ public class PostServiceImpl implements PostService {
 		List<PostAndUserVO> postList = postDAO.findAllPost();
 		logger.info("postList.size: " + postList.size());
 		logger.info("postList: " + postList.toString());
-		
-		TokenVO userByToken = userDAO.viewUserByToken(accesstoken);
-		logger.info("user by token: " + userByToken);
+		if (accesstoken != null) {
 
-		Long userId = userByToken.getUserId();
-		logger.info("user id: " + userId);
+			TokenVO userByToken = userDAO.viewUserByToken(accesstoken);
+			logger.info("user by token: " + userByToken);
 
-		List<FeedVO> followees = feedDAO.findFolloweeByUser(userId);
-		logger.info("followees.size: " + followees.size());
-		// list followeeList = feedVO.getFolloweeId();
-		// 1. post list 길이 마큼 반복
-		// 2. 하나의 pnuVO 에서 user id 가져오기
+			Long userId = userByToken.getUserId();
+			logger.info("user id: " + userId);
 
-		ArrayList<Long> postUser = new ArrayList<Long>(postList.size());// for문 안에서 글쓴이 id
-		ArrayList<Long> followeeList = new ArrayList<Long>(followees.size()); // for문 안에서 내가 팔로우중인 id		
-		
-		
-		for (int i = 0; i < postList.size(); i++) {
-//			logger.info( "for 1 . i = "+i);
-			postUser.add(postList.get(i).getUserId());
-			
-		}
+			List<FeedVO> followees = feedDAO.findFolloweeByUser(userId);
+			logger.info("followees.size: " + followees.size());
 
-		for (int j = 0; j < followees.size(); j++) {
-//			logger.info( "for 1 . J = "+j);
-			followeeList.add(followees.get(j).getFolloweeId());
+			ArrayList<Long> postUser = new ArrayList<Long>(postList.size());
+			ArrayList<Long> followeeList = new ArrayList<Long>(followees.size());
 
-		}
+			for (int i = 0; i < postList.size(); i++) {
+				postUser.add(postList.get(i).getUserId());
 
-
-		int i = 0;
-		for (Long postUserId : postUser) {// userId 하나당 10
-			boolean isFollow = false;
-			for (Long followeeId : followeeList) { // followeeId 하나씩 4
-
-				// if 로 글쓴이 id 와 내가 팔로우 중인 id 비교
-				if (postUserId.equals(followeeId)) { // 둘이 맞는지 비교
-					isFollow = true;
-					break;
-
-				} else {
-					isFollow = false;
-				}
 			}
-			postList.get(i).getUser().setIsFollow(isFollow);
-			i++;
+
+			for (int j = 0; j < followees.size(); j++) {
+				followeeList.add(followees.get(j).getFolloweeId());
+			}
+
+			int i = 0;
+			for (Long postUserId : postUser) {
+				boolean isFollow = false;
+				for (Long followeeId : followeeList) {
+
+					// if 로 글쓴이 id 와 내가 팔로우 중인 id 비교
+					if (postUserId.equals(followeeId)) {
+						isFollow = true;
+						break;
+					} else {
+						isFollow = false;
+					}
+				}
+				postList.get(i).getUser().setIsFollow(isFollow);
+				i++;
+			}
+
+			responseData.setCode(HttpStatus.OK);
+			responseData.setMessage("SUCCESS");
+			responseData.setData(postList);
+			return responseData;
+		} else {
+			responseData.setCode(HttpStatus.OK);
+			responseData.setMessage("SUCCESS");
+			responseData.setData(postList);
+			return responseData;
+
 		}
-
-		responseData.setCode(HttpStatus.OK);
-		responseData.setMessage("SUCCESS");
-		responseData.setData(postList);
-
-		return responseData;
 	}
 
 	@Override
@@ -194,7 +190,7 @@ public class PostServiceImpl implements PostService {
 		// MyBatis 쿼리문 호출 후에 리턴값은 성공시 1, 실패시 0이 된다.
 		int result = postDAO.deletePostById(id);
 		logger.info("result: " + result);
-		
+
 		int feedResult = feedDAO.deleteFeedByPostId(id);
 		logger.info("feedResult :" + feedResult);
 
